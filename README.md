@@ -1,3 +1,4 @@
+# Daniel Yde Therkildsen
 # The Awesome Newspage
 
 ## Installation
