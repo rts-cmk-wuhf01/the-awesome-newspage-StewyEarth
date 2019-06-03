@@ -2,7 +2,7 @@
 
 <div class="latest-posts-widget mb-50">
     <% latestNews.forEach(news => { %>
-    <% let now = new Date(news.postTime); %>
+    <% let postTime = new Date(news.postTime); %>
 
     <div class="single-blog-post small-featured-post d-flex">
         <div class="post-thumb">
@@ -14,7 +14,7 @@
                 <a href="#" class="post-title">
                     <h6><%= news.title %></h6>
                 </a>
-                <p class="post-date"><span><%= dateAndTime.format(now, 'hh:mm A') %></span> | <span><%= dateAndTime.format(now, 'MMM DD') %></span></p>
+                <p class="post-date"><span><%= dateAndTime.format(postTime, 'hh:mm A') %></span> | <span><%= dateAndTime.format(postTime, 'MMM DD') %></span></p>
             </div>
         </div>
     </div>
@@ -32,14 +32,14 @@
 <div class="latest-comments-widget">
     <h3>Latest Comments</h3>
     <% latestComments.forEach(comment => { %>
-    <% let now = new Date(comment.postTime); %>
+    <% let postTime = new Date(comment.postTime); %>
     <div class="single-comments d-flex">
         <div class="comments-thumbnail mr-15">
             <img src=<%= comment.imgPath %> alt="">
         </div>
         <div class="comments-text">
             <a href="#"><%= comment.name %> <span>on</span> <%= comment.commentedPost %></a>
-            <p><%= dateAndTime.format(now, 'hh:mm A, MMMM DD, YYYY ') %></p>
+            <p><%= dateAndTime.format(postTime, 'hh:mm A, MMMM DD, YYYY ') %></p>
         </div>
     </div>
     <% }); %>

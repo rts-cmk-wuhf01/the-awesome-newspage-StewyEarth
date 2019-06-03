@@ -1,4 +1,80 @@
 module.exports = (app) => {
+   let popularNewsHomeData = [
+      {
+         imgPath: "img/bg-img/7.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-14 06:00:14",
+      },
+      {
+         imgPath: "img/bg-img/8.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-13 07:00:14",
+      }, {
+         imgPath: "img/bg-img/9.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-12 08:00:14",
+      }, {
+         imgPath: "img/bg-img/10.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-11 09:00:14",
+      }, {
+         imgPath: "img/bg-img/11.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-10 10:00:14",
+      }
+   ]
+   let worldNewsAllData = [
+      {
+         imgPath: "img/bg-img/7.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-14 06:00:14",
+      },
+      {
+         imgPath: "img/bg-img/8.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-13 07:00:14",
+      }, {
+         imgPath: "img/bg-img/9.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-12 08:00:14",
+      }, {
+         imgPath: "img/bg-img/10.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-11 09:00:14",
+      }, {
+         imgPath: "img/bg-img/11.jpg",
+         title: "Orci varius natoque penatibus et magnis",
+         postTime: "2019-04-10 10:00:14",
+      }
+   ]
+   let editorsPickData = [
+      {
+         imgPath: "img/bg-img/1.jpg",
+         title: "Orci varius natoque penatibus et magnis dis parturient montes.",
+         postTime: "2019-04-14 06:00:14",
+      },
+      {
+         imgPath: "img/bg-img/2.jpg",
+         title: "Orci varius natoque penatibus et magnis dis parturient montes.",
+         postTime: "2019-04-13 07:00:14",
+      }, {
+         imgPath: "img/bg-img/3.jpg",
+         title: "Orci varius natoque penatibus et magnis dis parturient montes.",
+         postTime: "2019-04-12 08:00:14",
+      }, {
+         imgPath: "img/bg-img/4.jpg",
+         title: "Orci varius natoque penatibus et magnis dis parturient montes.",
+         postTime: "2019-04-11 09:00:14",
+      }, {
+         imgPath: "img/bg-img/5.jpg",
+         title: "Orci varius natoque penatibus et magnis dis parturient montes.",
+         postTime: "2019-04-10 10:00:14",
+      }, {
+         imgPath: "img/bg-img/6.jpg",
+         title: "Orci varius natoque penatibus et magnis dis parturient montes.",
+         postTime: "2019-04-09 11:00:14",
+      }
+   ]
    let latestNewsData = [
       {
          imgPath: "img/bg-img/19.jpg",
@@ -82,6 +158,9 @@ module.exports = (app) => {
       res.render('home', {
          latestNews: latestNewsData,
          popularNews: popularNewsData,
+         editorsPicks: editorsPickData,
+         worldNewsAll: worldNewsAllData,
+
       });
    });
    app.get('/about', (req, res, next) => {
