@@ -26,7 +26,7 @@
     <!-- ##### Header Area End ##### -->
 
     <!-- ##### Hero Area Start ##### -->
-        <%- include("partials/heroarea.ejs")%>
+    <%- include("partials/heroarea.ejs")%>
     <!-- ##### Hero Area End ##### -->
 
     <!-- ##### About Area Start ##### -->
@@ -115,100 +115,26 @@
             <div class="row">
 
                 <!-- Single Team Member -->
+                <% teamMembers.forEach(teamMember => { %>
                 <div class="col-12 col-sm-6 col-lg-3">
                     <div class="single-team-member">
-                        <img src="img/bg-img/t1.jpg" alt="">
+                        <img src=<%- teamMember.imgPath %> alt="">
                         <div class="team-info">
-                            <h5>James Williams</h5>
-                            <h6>Senior Editor</h6>
+                            <h5><%- teamMember.name %></h5>
+                            <h6><%- teamMember.position %></h6>
                         </div>
                     </div>
                 </div>
+                <% }); %>
 
-                <!-- Single Team Member -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single-team-member">
-                        <img src="img/bg-img/t2.jpg" alt="">
-                        <div class="team-info">
-                            <h5>Christinne Smith</h5>
-                            <h6>Senior Editor</h6>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Team Member -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single-team-member">
-                        <img src="img/bg-img/t3.jpg" alt="">
-                        <div class="team-info">
-                            <h5>Alicia Dormund</h5>
-                            <h6>Senior Editor</h6>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Team Member -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single-team-member">
-                        <img src="img/bg-img/t4.jpg" alt="">
-                        <div class="team-info">
-                            <h5>Steve Duncan</h5>
-                            <h6>Senior Editor</h6>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Team Member -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single-team-member">
-                        <img src="img/bg-img/t5.jpg" alt="">
-                        <div class="team-info">
-                            <h5>James Williams</h5>
-                            <h6>Senior Editor</h6>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Team Member -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single-team-member">
-                        <img src="img/bg-img/t6.jpg" alt="">
-                        <div class="team-info">
-                            <h5>Christinne Smith</h5>
-                            <h6>Senior Editor</h6>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Team Member -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single-team-member">
-                        <img src="img/bg-img/t7.jpg" alt="">
-                        <div class="team-info">
-                            <h5>Alicia Dormund</h5>
-                            <h6>Senior Editor</h6>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Team Member -->
-                <div class="col-12 col-sm-6 col-lg-3">
-                    <div class="single-team-member">
-                        <img src="img/bg-img/t8.jpg" alt="">
-                        <div class="team-info">
-                            <h5>Steve Duncan</h5>
-                            <h6>Senior Editor</h6>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>
     <!-- ##### Team Area End ##### -->
 
     <!-- ##### Footer Area Start ##### -->
-        <footer class="footer-area">
-    <%- include("partials/footer.ejs") %>
+    <footer class="footer-area">
+        <%- include("partials/footer.ejs") %>
     </footer>
 
     <%- include("partials/scripts.ejs") %>

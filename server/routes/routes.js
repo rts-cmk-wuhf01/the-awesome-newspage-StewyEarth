@@ -197,6 +197,41 @@ module.exports = (app) => {
          imgpath: "img/bg-img/video3.jpg"
       },
    ]
+   let teamData = [
+      {
+         imgPath: "img/bg-img/t1.jpg",
+         name: "James Williams",
+         position: "CEO",
+      },{
+         imgPath: "img/bg-img/t2.jpg",
+         name: "Christinne Smith",
+         position: "Precenter",
+      },{
+         imgPath: "img/bg-img/t3.jpg",
+         name: "Alicia Dormund",
+         position: "Senior Editor",
+      },{
+         imgPath: "img/bg-img/t4.jpg",
+         name: "Steve Duncan",
+         position: "Precenter",
+      },{
+         imgPath: "img/bg-img/t5.jpg",
+         name: "James Williams",
+         position: "Senior Editor",
+      },{
+         imgPath: "img/bg-img/t6.jpg",
+         name: "Christinne Smith",
+         position: "Interviewer",
+      },{
+         imgPath: "img/bg-img/t7.jpg",
+         name: "Alicia Dormund",
+         position: "Intern",
+      },{
+         imgPath: "img/bg-img/t8.jpg",
+         name: "Steve Duncan",
+         position: "Intern",
+      }
+   ]
    app.get('/', (req, res, next) => {
       res.render('home', {
          latestNews: latestNewsData,
@@ -208,7 +243,9 @@ module.exports = (app) => {
       });
    });
    app.get('/about', (req, res, next) => {
-      res.render('about');
+      res.render('about',{
+         teamMembers: teamData,
+      });
    });
    app.get('/catagories-post', (req, res, next) => {
       res.render('catagories-post', {
