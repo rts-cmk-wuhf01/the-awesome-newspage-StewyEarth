@@ -177,7 +177,8 @@
 
                         <!-- Comment Area Start -->
                         <div class="comment_area clearfix">
-                            <h5 class="title">3 Comments</h5>
+                            <% if (typeof(singlePostComments) != "undefined"){ %>
+                            <h5 class="title"><%= singlePostComments.length %> Comments</h5>
                             <ol>
                                 <% singlePostComments.forEach(singlePostComment => { %>
                                     <% let postTime = new Date(singlePostComment.postTime); %>
@@ -198,6 +199,9 @@
                                     </div>
                                 </li>
                                 <% }); %>
+                                <% }else{ %>
+                                    <h5 class="title">No comments could be found</h5>
+                                <% }; %>
                             </ol>
                         </div>
 

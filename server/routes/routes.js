@@ -176,6 +176,26 @@ module.exports = (app) => {
          postTime: "2019-06-03 10:00:14",
          message: "Donec turpis erat, scelerisque id euismod sit amet, fermentum vel dolor. Nulla facilisi. Sed pellen tesque lectus et accu msan aliquam. Fusce lobortis cursus quam, id mattis sapien."
       },
+      {
+         posterImgpath: "img/bg-img/29.jpg",
+         posterName: "Jason Marlo",
+         postTime: "2019-06-02 10:00:14",
+         message: "Donec turpis erat, scelerisque id euismod sit amet, fermentum vel dolor. Nulla facilisi. Sed pellen tesque lectus et accu msan aliquam. Fusce lobortis cursus quam, id mattis sapien."
+      },
+   ]
+   let videosHomeData = [
+      {
+         url:"https://www.youtube.com/watch?v=M16CGK1T9MM",
+         imgpath: "img/bg-img/video1.jpg"
+      },
+      {
+         url:"https://www.youtube.com/watch?v=nzWDXhXkEQQ",
+         imgpath: "img/bg-img/video2.jpg"
+      },
+      {
+         url:"https://www.youtube.com/watch?v=tMYBr2H0xuk",
+         imgpath: "img/bg-img/video3.jpg"
+      },
    ]
    app.get('/', (req, res, next) => {
       res.render('home', {
@@ -184,6 +204,7 @@ module.exports = (app) => {
          editorsPicks: editorsPickData,
          worldNewsAll: worldNewsAllData,
          popularNewsHomeArray: popularNewsHomeData,
+         videosHome: videosHomeData,
       });
    });
    app.get('/about', (req, res, next) => {

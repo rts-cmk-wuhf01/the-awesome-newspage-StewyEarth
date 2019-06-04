@@ -10,7 +10,7 @@
 
     <!-- Title -->
     <title>The News Paper - News & Lifestyle Magazine Template</title>
-    
+
     <!-- Favicon -->
     <link rel="icon" href="img/core-img/favicon.ico">
 
@@ -26,7 +26,7 @@
     <!-- ##### Header Area End ##### -->
 
     <!-- ##### Hero Area ##### -->
-        <%- include("partials/heroarea.ejs")%>
+    <%- include("partials/heroarea.ejs")%>
 
     <!-- ##### Featured Post Area Start ##### -->
     <div class="featured-post-area">
@@ -115,7 +115,7 @@
                     </div>
                 </div>
 
-            <%- include("partials/featured-post-sidebar.ejs")%>
+                <%- include("partials/featured-post-sidebar.ejs")%>
             </div>
         </div>
     </div>
@@ -131,8 +131,8 @@
                     </div>
 
                     <div class="row">
-                        
-                    <% popularNewsHomeArray.forEach(popularNewsHomeItem => { %>
+
+                        <% popularNewsHomeArray.forEach(popularNewsHomeItem => { %>
                         <!-- Single Post -->
                         <div class="col-12 col-md-6">
                             <div class="single-blog-post style-3">
@@ -154,7 +154,7 @@
                             </div>
                         </div>
                         <%}); %>
-                    
+
                     </div>
                 </div>
 
@@ -165,9 +165,9 @@
                     <!-- Popular News Widget -->
                     <%- include("partials/popular-news-widget.ejs")%>
 
-                    <!-- Newsletter Widget --> 
+                    <!-- Newsletter Widget -->
                     <%- include("partials/newsletter.ejs")%>
-                    
+
                 </div>
             </div>
         </div>
@@ -179,40 +179,22 @@
         <div class="container">
             <div class="row justify-content-center">
                 <!-- Single Video Post -->
+                <% if (typeof(videosHome) != "undefined"){ %>
+                <% videosHome.forEach(videosHomeItem => { %>
                 <div class="col-12 col-sm-6 col-md-4">
                     <div class="single-video-post">
-                        <img src="img/bg-img/video1.jpg" alt="">
+                        <img src=<%= videosHomeItem.imgpath %> alt="">
                         <!-- Video Button -->
                         <div class="videobtn">
-                            <a href="https://www.youtube.com/watch?v=5BQr-j3BBzU" class="videoPlayer"><i
+                            <a href=<%= videosHomeItem.url %> class="videoPlayer"><i
                                     class="fa fa-play" aria-hidden="true"></i></a>
                         </div>
                     </div>
                 </div>
-
-                <!-- Single Video Post -->
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="single-video-post">
-                        <img src="img/bg-img/video2.jpg" alt="">
-                        <!-- Video Button -->
-                        <div class="videobtn">
-                            <a href="https://www.youtube.com/watch?v=5BQr-j3BBzU" class="videoPlayer"><i
-                                    class="fa fa-play" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Single Video Post -->
-                <div class="col-12 col-sm-6 col-md-4">
-                    <div class="single-video-post">
-                        <img src="img/bg-img/video3.jpg" alt="">
-                        <!-- Video Button -->
-                        <div class="videobtn">
-                            <a href="https://www.youtube.com/watch?v=5BQr-j3BBzU" class="videoPlayer"><i
-                                    class="fa fa-play" aria-hidden="true"></i></a>
-                        </div>
-                    </div>
-                </div>
+                <% }); %>
+                <% }else{ %>
+                <h5 class="title">No comments could be found</h5>
+                <% }; %>
             </div>
         </div>
     </div>
@@ -243,7 +225,8 @@
                                         <h6><%= editorsPick.title %></h6>
                                     </a>
                                     <div class="post-meta">
-                                        <div class="post-date"><a href="#"><%= dateAndTime.format(now, 'MMMM DD, YYYY') %></a></div>
+                                        <div class="post-date"><a
+                                                href="#"><%= dateAndTime.format(now, 'MMMM DD, YYYY') %></a></div>
                                     </div>
                                 </div>
                             </div>
@@ -269,7 +252,8 @@
                                 <h6><%= worldnews.title %></h6>
                             </a>
                             <div class="post-meta">
-                                <div class="post-date"><a href="#"><%= dateAndTime.format(now, 'MMMM DD, YYYY') %></a></div>
+                                <div class="post-date"><a href="#"><%= dateAndTime.format(now, 'MMMM DD, YYYY') %></a>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -296,10 +280,11 @@
 
     <!-- ##### Footer Area Start ##### -->
     <footer class="footer-area">
-    <%- include("partials/footer.ejs") %>
+        <%- include("partials/footer.ejs") %>
     </footer>
     <!-- ##### Footer Area Start ##### -->
 
     <%- include("partials/scripts.ejs") %>
 </body>
+
 </html>
