@@ -1,3 +1,5 @@
+const mysql = require("../config/mysql")
+
 module.exports = (app) => {
    let popularNewsHomeData = [
       {
@@ -76,40 +78,6 @@ module.exports = (app) => {
       }, {
          imgPath: "img/bg-img/6.jpg",
          title: "Orci varius natoque penatibus et magnis dis parturient montes.",
-         postTime: "2019-04-09 11:00:14",
-      }
-   ]
-   let latestNewsData = [
-      {
-         imgPath: "img/bg-img/19.jpg",
-         postCategory: "Finance",
-         title: "Pellentesque mattis arcu massa, nec fringilla turpis eleifend id.",
-         postTime: "2019-04-14 06:00:14",
-      },
-      {
-         imgPath: "img/bg-img/20.jpg",
-         postCategory: "Politics",
-         title: "Sed a elit euismod augue semper congue sit amet ac sapien.",
-         postTime: "2019-04-13 07:00:14",
-      }, {
-         imgPath: "img/bg-img/21.jpg",
-         postCategory: "Health",
-         title: "Pellentesque mattis arcu massa, nec fringilla turpis eleifend id.",
-         postTime: "2019-04-12 08:00:14",
-      }, {
-         imgPath: "img/bg-img/22.jpg",
-         postCategory: "Finance",
-         title: "Augue semper congue sit amet ac sapien. Fusce consequat.",
-         postTime: "2019-04-11 09:00:14",
-      }, {
-         imgPath: "img/bg-img/23.jpg",
-         postCategory: "Travel",
-         title: "Pellentesque mattis arcu massa, nec fringilla turpis eleifend id.",
-         postTime: "2019-04-10 10:00:14",
-      }, {
-         imgPath: "img/bg-img/24.jpg",
-         postCategory: "Politics",
-         title: "Augue semper congue sit amet ac sapien. Fusce consequat.",
          postTime: "2019-04-09 11:00:14",
       }
    ]
@@ -232,11 +200,17 @@ module.exports = (app) => {
          position: "Intern",
       }
    ]
-   app.get('/', (req, res, next) => {
+   app.get('/', async (req, res, next) => {
+      
+      let db = await mysql.connect();
+      let [latestArticlesData] = await db.execute("select * FROM articles ORDER BY postTime DESC LIMIT 6")
+      let [editorsPicksData] = await db.execute("SELECT articles.imgPath as imgPath,articles.title as title,articles.postTime as postTime FROM editorspicks INNER JOIN articles on articles.id = editorspicks.fk_pickedArticle LIMIT 6")
+      db.end();
+
       res.render('home', {
-         latestNews: latestNewsData,
+         latestNews: latestArticlesData,
          mostPopularNews: mostPopularNewsData,
-         editorsPicks: editorsPickData,
+         editorsPicks: editorsPicksData,
          worldNewsAll: worldNewsAllData,
          popularNewsHomeArray: popularNewsHomeData,
          videosHome: videosHomeData,
@@ -257,6 +231,7 @@ module.exports = (app) => {
    app.get('/contact', (req, res, next) => {
       res.render('contact');
    });
+
    app.get('/single-post', (req, res, next) => {
       res.render('single-post', {
          latestNews: latestNewsData,
