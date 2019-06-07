@@ -1,56 +1,6 @@
 const mysql = require("../config/mysql")
 
 module.exports = (app) => {
-   let worldNewsAllData = [
-      {
-         imgPath: "img/bg-img/7.jpg",
-         title: "Orci varius natoque penatibus et magnis",
-         postTime: "2019-04-14 06:00:14",
-      },
-      {
-         imgPath: "img/bg-img/8.jpg",
-         title: "Orci varius natoque penatibus et magnis",
-         postTime: "2019-04-13 07:00:14",
-      }, {
-         imgPath: "img/bg-img/9.jpg",
-         title: "Orci varius natoque penatibus et magnis",
-         postTime: "2019-04-12 08:00:14",
-      }, {
-         imgPath: "img/bg-img/10.jpg",
-         title: "Orci varius natoque penatibus et magnis",
-         postTime: "2019-04-11 09:00:14",
-      }, {
-         imgPath: "img/bg-img/11.jpg",
-         title: "Orci varius natoque penatibus et magnis",
-         postTime: "2019-04-10 10:00:14",
-      }
-   ]
-   let latestCommentsData = [
-      {
-         name: "Jason Marlo",
-         imgPath: "img/bg-img/29.jpg",
-         postTime: "2019-04-14 10:00:14",
-         commentedPost: "Facebook is offering facial recognition..."
-      },
-      {
-         name: "Shanie Bolit",
-         imgPath: "img/bg-img/30.jpg",
-         postTime: "2019-04-14 23:00:14",
-         commentedPost: "Facebook is offering facial recognition..."
-      },
-      {
-         name: "Jamie Smith",
-         imgPath: "img/bg-img/31.jpg",
-         postTime: "2019-04-14 04:00:14",
-         commentedPost: "Facebook is offering facial recognition..."
-      },
-      {
-         name: "Igor Usio",
-         imgPath: "img/bg-img/32.jpg",
-         postTime: "2019-04-14 06:00:14",
-         commentedPost: "Facebook is offering facial recognition..."
-      }
-   ]
    let singlePostCommentsData = [
       {
          posterImgpath: "img/bg-img/30.jpg",
@@ -122,6 +72,7 @@ module.exports = (app) => {
       let [mostPopularNewsData] = await db.execute("select * FROM articles ORDER BY likes DESC LIMIT 4");
       let [popularNewsHomeData] = await db.execute("select *, postcategories.name as postCategory FROM articles INNER JOIN postcategories on articles.fk_postCategory = postcategories.id ORDER BY likes DESC LIMIT 4");
       let [videosHomeData] = await db.execute("select * FROM videos")
+      let [worldNewsAllData] = await db.execute("select * FROM articles WHERE fk_postCategory = 9 LIMIT 3")
 
       db.end();
 
@@ -139,9 +90,16 @@ module.exports = (app) => {
          teamMembers: teamData,
       });
    });
-   app.get('/catagories-post', (req, res, next) => {
+   app.get('/catagories-post', async (req, res, next) => {
+      let db = await mysql.connect();
+
+      let [latestArticlesData] = await db.execute("select *, postcategories.name as postCategory FROM articles INNER JOIN postcategories on articles.fk_postCategory = postcategories.id ORDER BY postTime DESC LIMIT 6 ");
+      let [latestCommentsData] = await db.execute("select comments.postTime as postTime, articles.title as commentedPost, users.img as imgPath,users.name as name FROM comments INNER JOIN articles on comments.fk_commentedPostId = articles.id INNER JOIN users on fk_userId = comments.id ORDER BY comments.postTime DESC LIMIT 6 ");
+      let [mostPopularNewsData] = await db.execute("select * FROM articles ORDER BY likes DESC LIMIT 4");
+
+      db.end();
       res.render('catagories-post', {
-         latestNews: latestNewsData,
+         latestNews: latestArticlesData,
          latestComments: latestCommentsData,
          mostPopularNews: mostPopularNewsData,
       });
@@ -154,6 +112,7 @@ module.exports = (app) => {
       let db = await mysql.connect();
       let [latestArticlesData] = await db.execute("select * FROM articles ORDER BY postTime DESC LIMIT 6");
       let [mostPopularNewsData] = await db.execute("select * FROM articles ORDER BY likes DESC LIMIT 4");
+      let [latestCommentsData] = await db.execute("select comments.postTime as postTime, articles.title as commentedPost, users.img as imgPath,users.name as name FROM comments INNER JOIN articles on comments.fk_commentedPostId = articles.id INNER JOIN users on fk_userId = comments.id ORDER BY comments.postTime DESC LIMIT 6 ");
       db.end();
 
       res.render('single-post', {

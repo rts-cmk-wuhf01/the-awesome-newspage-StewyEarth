@@ -1,0 +1,11 @@
+INSERT INTO articles (id, title, fk_author, imgPath, fk_postCategory, postTime, content, likes, summery, tags) VALUES (
+NULL, /* ID */
+'Overpopulation problem in Malaysia might start a mass purge if not handled soon.', /* Title */
+'4', /* AuthorID */
+'img/bg-img/41.jpg',  /* Imgpath */
+'9', /* Category ID */
+'2019-06-08 15:12:25', /* Posttime */
+' Nam elit turpis, rutrum at metus id, iaculis ultricies dui. Nulla aliquam metus eget ante bibendum egestas. Proin feugiat mauris a ligula condimentum, at gravida dui varius. Fusce ipsum diam, rhoncus ac ultrices sed, feugiat consequat arcu. Nullam varius porttitor ex ac sodales. Nullam lectus nisi, laoreet at orci a, pulvinar gravida diam. Suspendisse feugiat venenatis sapien, at imperdiet lacus ornare quis. Vestibulum magna magna, placerat et neque at, commodo tempus nulla. Nunc erat sem, laoreet ac sapien ac, tincidunt bibendum elit. Sed in risus malesuada, pretium lectus sed, dictum lectus. Nam bibendum sit amet ipsum et bibendum. Curabitur vel dui elit. Fusce mollis, purus ut aliquet maximus, felis enim venenatis justo, non viverra neque lacus eu urna. Aenean tincidunt finibus mi, ut placerat tellus vehicula at. Aenean at lacus varius, scelerisque ex non, pulvinar augue.\r\n\r\nNulla ut consectetur justo, sit amet placerat diam. Sed interdum eros vel orci dignissim, ac interdum arcu luctus. Sed euismod turpis vitae justo vulputate, et ultricies ipsum porttitor. Morbi eu ante sit amet ex semper sagittis at rutrum velit. Proin faucibus luctus urna eget ultrices. Proin enim nulla, ornare ut purus ut, semper fermentum lectus. Maecenas auctor nisi sed tellus fringilla pharetra. Pellentesque eget sem eleifend, rutrum turpis vel, dictum tellus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi luctus neque vitae rhoncus cursus. Vestibulum efficitur purus lorem, at pellentesque est suscipit ut. In et ornare lacus. Donec finibus quam arcu, non aliquet mauris euismod posuere. ', /* Content */
+'1205', /* Likes */
+'Vestibulum efficitur purus lorem, at pellentesque est suscipit ut. In et ornare lacus. Donec finibus quam arcu, non aliquet mauris euismod posuere. ', /* Summary */
+'purge, die, world, Overpopulation'); /* Tags */
