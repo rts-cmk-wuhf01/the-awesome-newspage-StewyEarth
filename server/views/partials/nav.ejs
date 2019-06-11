@@ -29,15 +29,15 @@
                                     <li><a href="#">Pages</a>
                                         <ul class="dropdown">
                                             <li><a href="/">Home</a></li>
-                                            <li><a href="/catagories-post">Catagories</a></li>
-                                            <li><a href="/single-post">Single Articles</a></li>
+                                            <li><a href="/category">Catagories</a></li>
+                                            <li><a href="/article">Single Articles</a></li>
                                             <li><a href="/about">About Us</a></li>
                                             <li><a href="/contact">Contact</a></li>
                                             <li><a href="#">Dropdown</a>
                                                 <ul class="dropdown">
                                                     <li><a href="/">Home</a></li>
-                                                    <li><a href="/catagories-post">Catagories</a></li>
-                                                    <li><a href="/single-post">Single Articles</a></li>
+                                                    <li><a href="/category">Catagories</a></li>
+                                                    <li><a href="/article">Single Articles</a></li>
                                                     <li><a href="/about">About Us</a></li>
                                                     <li><a href="/contact">Contact</a></li>
                                                 </ul>
@@ -49,24 +49,24 @@
                                             <ul class="single-mega cn-col-4">
                                                 <li class="title">Catagories</li>
                                                 <li><a href="/">Home</a></li>
-                                                <li><a href="/catagories-post">Catagories</a></li>
-                                                <li><a href="/single-post">Single Articles</a></li>
+                                                <li><a href="/category">Catagories</a></li>
+                                                <li><a href="/article">Single Articles</a></li>
                                                 <li><a href="/about">About Us</a></li>
                                                 <li><a href="/contact">Contact</a></li>
                                             </ul>
                                             <ul class="single-mega cn-col-4">
                                                 <li class="title">Catagories</li>
                                                 <li><a href="/">Home</a></li>
-                                                <li><a href="/catagories-post">Catagories</a></li>
-                                                <li><a href="/single-post">Single Articles</a></li>
+                                                <li><a href="/category">Catagories</a></li>
+                                                <li><a href="/article">Single Articles</a></li>
                                                 <li><a href="/about">About Us</a></li>
                                                 <li><a href="/contact">Contact</a></li>
                                             </ul>
                                             <ul class="single-mega cn-col-4">
                                                 <li class="title">Catagories</li>
                                                 <li><a href="/">Home</a></li>
-                                                <li><a href="/catagories-post">Catagories</a></li>
-                                                <li><a href="/single-post">Single Articles</a></li>
+                                                <li><a href="/category">Catagories</a></li>
+                                                <li><a href="/article">Single Articles</a></li>
                                                 <li><a href="/about">About Us</a></li>
                                                 <li><a href="/contact">Contact</a></li>
                                             </ul>
@@ -110,7 +110,10 @@
                                         </div>
                                     </li>
                                     <% if(typeof categories != "undefined"){%>
-                                    <li><a href="#">Politics</a></li>
+                                    <% categories.forEach(category => {%>
+                                        
+                                    <li><a href="/category/<%=category.id%>"><%= category.name %></a></li>
+                                    <% });%>
                                     <% } %>
                                 </ul>
                             </div>
