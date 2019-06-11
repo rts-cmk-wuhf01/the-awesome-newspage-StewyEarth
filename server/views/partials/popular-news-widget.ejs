@@ -5,7 +5,7 @@
     <% mostPopularNews.forEach((news,index) => { %>
         <% let now = new Date(news.postTime); %>
     <div class="single-popular-post">
-        <a href="#">
+        <a href="/article/<%= news.id %>">
             <h6><span><%= index + 1 %></span><%= news.title %></h6>
         </a>
         <p><%= dateAndTime.format(now, 'MMMM DD, YYYY') %></p>
