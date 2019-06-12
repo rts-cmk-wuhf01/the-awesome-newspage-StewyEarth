@@ -44,7 +44,7 @@
                                 <a href="#"><img src="/img/bg-img/<%=article.img%>" alt=""></a>
                             </div>
                             <div class="post-data">
-                                <a href="#" class="post-catagory"><%= article.category %></a>
+                                <a href="#" class="post-category"><%= article.category %></a>
                                 <a href="#" class="post-title">
                                     <h6><%= article.title %></h6>
                                 </a>
@@ -108,7 +108,7 @@
                                         <a href="#"><img src="/img/bg-img/12.jpg" alt=""></a>
                                     </div>
                                     <div class="post-data">
-                                        <a href="#" class="post-catagory">Finance</a>
+                                        <a href="#" class="post-category">Finance</a>
                                         <a href="#" class="post-title">
                                             <h6>Dolor sit amet, consectetur adipiscing elit. Nam eu metus sit amet odio
                                                 sodales placer. Sed varius leo ac...</h6>
@@ -130,7 +130,7 @@
                                         <a href="#"><img src="/img/bg-img/13.jpg" alt=""></a>
                                     </div>
                                     <div class="post-data">
-                                        <a href="#" class="post-catagory">Finance</a>
+                                        <a href="#" class="post-category">Finance</a>
                                         <a href="#" class="post-title">
                                             <h6>Dolor sit amet, consectetur adipiscing elit. Nam eu metus sit amet odio
                                                 sodales placer. Sed varius leo ac...</h6>
@@ -148,24 +148,24 @@
 
                         <!-- Comment Area Start -->
                         <div class="comment_area clearfix">
-                            <% if (typeof(singlePostComments) != "undefined"){ %>
-                            <h5 class="title"><%= singlePostComments.length %> Comments</h5>
+                            <% if (typeof(articleComments) != "undefined"){ %>
+                            <h5 class="title"><%= articleComments.length %> Comments</h5>
                             <ol>
-                                <% singlePostComments.forEach(singlePostComment => { %>
-                                    <% let postTime = new Date(singlePostComment.postTime); %>
+                                <% articleComments.forEach(articleComment => { %>
+                                    <% let postTime = new Date(articleComment.postTime); %>
                                 <!-- Single Comment Area -->
                                 <li class="single_comment_area">
                                     <!-- Comment Content -->
                                     <div class="comment-content d-flex">
                                         <!-- Comment Author -->
                                         <div class="comment-author">
-                                            <img src=<%= singlePostComment.posterImgpath %> alt="author">
+                                            <img src="/img/bg-img/<%= articleComment.img %>" alt="author">
                                         </div>
                                         <!-- Comment Meta -->
                                         <div class="comment-meta">
-                                            <a href="#" class="post-author"><%= singlePostComment.posterName %></a>
+                                            <a href="#" class="post-author"><%= articleComment.name %></a>
                                             <a href="#" class="post-date"><%= dateAndTime.format(postTime, 'MMMM DD, YYYY') %></a>
-                                            <p><%= singlePostComment.message %></p>
+                                            <p><%= articleComment.message %></p>
                                         </div>
                                     </div>
                                 </li>
