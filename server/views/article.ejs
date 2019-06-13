@@ -44,7 +44,8 @@
                                 <a href="#"><img src="/img/bg-img/<%=article.img%>" alt=""></a>
                             </div>
                             <div class="post-data">
-                                <a href="/category/<%= article.categoryId %>" class="post-category"><%= article.category %></a>
+                                <a href="/category/<%= article.categoryId %>"
+                                    class="post-category"><%= article.category %></a>
                                 <a href="#" class="post-title">
                                     <h6><%= article.title %></h6>
                                 </a>
@@ -101,49 +102,32 @@
                         </div>
 
                         <div class="row">
+                            
+                            <% if(typeof relatedArticles != "undefined"){ %>
+                            <% relatedArticles.forEach(relatedArticle =>{%>
                             <!-- Single Post -->
                             <div class="col-12 col-md-6">
                                 <div class="single-blog-post style-3 mb-80">
                                     <div class="post-thumb">
-                                        <a href="#"><img src="/img/bg-img/12.jpg" alt=""></a>
+                                        <a href="/article/<%= relatedArticle.articleId %>"><img src="/img/bg-img/<%= relatedArticle.img %>" alt=""></a>
                                     </div>
                                     <div class="post-data">
-                                        <a href="#" class="post-category">Finance</a>
-                                        <a href="#" class="post-title">
-                                            <h6>Dolor sit amet, consectetur adipiscing elit. Nam eu metus sit amet odio
-                                                sodales placer. Sed varius leo ac...</h6>
+                                        <a href="/category/<%= relatedArticle.categoryid %>" class="post-category"><%= relatedArticle.category %></a>
+                                        <a href="/article/<%= relatedArticle.articleId %>" class="post-title">
+                                            <h6><%= relatedArticle.title %></h6>
                                         </a>
                                         <div class="post-meta d-flex align-items-center">
                                             <a href="#" class="post-like"><img src="/img/core-img/like.png" alt="">
-                                                <span>392</span></a>
+                                                <span><%= relatedArticle.likes %></span></a>
                                             <a href="#" class="post-comment"><img src="/img/core-img/chat.png" alt="">
-                                                <span>10</span></a>
+                                                <span><%= relatedArticle.commentCount %></span></a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <% })%>
+                            <% }%>
 
-                            <!-- Single Post -->
-                            <div class="col-12 col-md-6">
-                                <div class="single-blog-post style-3 mb-80">
-                                    <div class="post-thumb">
-                                        <a href="#"><img src="/img/bg-img/13.jpg" alt=""></a>
-                                    </div>
-                                    <div class="post-data">
-                                        <a href="#" class="post-category">Finance</a>
-                                        <a href="#" class="post-title">
-                                            <h6>Dolor sit amet, consectetur adipiscing elit. Nam eu metus sit amet odio
-                                                sodales placer. Sed varius leo ac...</h6>
-                                        </a>
-                                        <div class="post-meta d-flex align-items-center">
-                                            <a href="#" class="post-like"><img src="/img/core-img/like.png" alt="">
-                                                <span>392</span></a>
-                                            <a href="#" class="post-comment"><img src="/img/core-img/chat.png" alt="">
-                                                <span>10</span></a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Comment Area Start -->
@@ -152,7 +136,7 @@
                             <h5 class="title"><%= articleComments.length %> Comments</h5>
                             <ol>
                                 <% articleComments.forEach(articleComment => { %>
-                                    <% let postTime = new Date(articleComment.postTime); %>
+                                <% let postTime = new Date(articleComment.postTime); %>
                                 <!-- Single Comment Area -->
                                 <li class="single_comment_area">
                                     <!-- Comment Content -->
@@ -164,14 +148,15 @@
                                         <!-- Comment Meta -->
                                         <div class="comment-meta">
                                             <a href="#" class="post-author"><%= articleComment.name %></a>
-                                            <a href="#" class="post-date"><%= dateAndTime.format(postTime, 'MMMM DD, YYYY') %></a>
+                                            <a href="#"
+                                                class="post-date"><%= dateAndTime.format(postTime, 'MMMM DD, YYYY') %></a>
                                             <p><%= articleComment.message %></p>
                                         </div>
                                     </div>
                                 </li>
                                 <% }); %>
                                 <% }else{ %>
-                                    <h5 class="title">No comments could be found</h5>
+                                <h5 class="title">No comments could be found</h5>
                                 <% }; %>
                             </ol>
                         </div>
