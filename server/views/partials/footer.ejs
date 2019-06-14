@@ -13,9 +13,11 @@
                             </div>
                             <!-- List -->
                             <ul class="list">
-                                <li><a href="mailto:contact@youremail.com">contact@youremail.com</a></li>
-                                <li><a href="tel:+4352782883884">+43 5278 2883 884</a></li>
-                                <li><a href="http://yoursitename.com">www.yoursitename.com</a></li>
+                                <% if (typeof contactInfo != "undefined"){%>
+                                <li><a href="mailto:<%= contactInfo.mail %>"><%= contactInfo.mail %></a></li>
+                                <li><a href="tel:<%= contactInfo.phone %>"><%= contactInfo.phone %></a></li>
+                                <li><a href="/"><%= contactInfo.address %></a></li>
+                                <% }%>
                             </ul>
                         </div>
                     </div>

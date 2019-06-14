@@ -64,23 +64,24 @@
                         </form>
                     </div>
                 </div>
-
                 <div class="col-12 col-lg-4">
+                        <% if (typeof contactInfo != "undefined"){%>
                     <!-- Single Contact Information -->
                     <div class="single-contact-information mb-30">
                         <h6>Address:</h6>
-                        <p>481 Creekside Lane Avila <br>Beach, CA 93424</p>
+                        <p><%= contactInfo.address %></p>
                     </div>
                     <!-- Single Contact Information -->
                     <div class="single-contact-information mb-30">
                         <h6>Phone:</h6>
-                        <p>+53 345 7953 32453 <br>+53 345 7557 822112</p>
+                        <p><%= contactInfo.phone %></p>
                     </div>
                     <!-- Single Contact Information -->
                     <div class="single-contact-information mb-30">
                         <h6>Email:</h6>
-                        <p>yourmail@gmail.com</p>
+                        <p><%= contactInfo.mail %></p>
                     </div>
+                    <% }%>
                 </div>
             </div>
 

@@ -1,50 +1,10 @@
 const mysql = require("../config/mysql")
-
-async function getCategoriesData() {
-   let db = await mysql.connect();
-   let [postCategoryData] = await db.execute("SELECT * from postcategories")
-   db.end();
-   return [postCategoryData];
-}
-
-async function getLatestArticlesData() {
-   let db = await mysql.connect();
-   let [latestArticlesData] = await db.execute("SELECT postcategories.id as categoryid , postcategories.name as postCategory , articles.id , articles.title , articles.img , articles.postTime FROM postcategories LEFT OUTER JOIN articles ON fk_postCategory = postcategories.id WHERE articles.id = ( SELECT id FROM articles WHERE fk_postCategory = postcategories.id ORDER BY articles.postTime DESC LIMIT 1) ORDER BY postTime Desc");
-   db.end();
-   return [latestArticlesData];
-}
-
-async function getMostPopularNewsData() {
-   let db = await mysql.connect();
-   let [mostPopularNewsData] = await db.execute("select title,postTime,id FROM articles ORDER BY likes DESC LIMIT 4");
-   db.end();
-   return [mostPopularNewsData];
-}
-
-async function getBreakingNewsHeroData() {
-   let db = await mysql.connect();
-   let [breakingNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 6 ORDER BY postTime DESC LIMIT 3")
-   db.end();
-   return [breakingNewsHeroData];
-}
-
-async function getInternationalNewsHeroData() {
-   let db = await mysql.connect();
-   let [internationalNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 9 ORDER BY postTime DESC LIMIT 3")
-   db.end();
-   return [internationalNewsHeroData];
-}
-
+const sqlcalls = require('../sql-services/calls');
 
 module.exports = (app) => {
 
    app.get('/', async (req, res, next) => {
 
-      let [latestArticlesData] = await getLatestArticlesData();
-      let [mostPopularNewsData] = await getMostPopularNewsData()
-      let [internationalNewsHeroData] = await getInternationalNewsHeroData();
-      let [breakingNewsHeroData] = await getBreakingNewsHeroData();
-      let [categoriesData] = await getCategoriesData();
       let db = await mysql.connect();
 
       let [editorsPicksData] = await db.execute("SELECT articles.img as img,articles.title as title, articles.id as articleId,articles.postTime as postTime FROM editorspicks INNER JOIN articles on articles.id = editorspicks.fk_pickedArticle LIMIT 6");
@@ -57,11 +17,14 @@ module.exports = (app) => {
 
       let [worldNewsAllData] = await db.execute("select id,img,postTime,title FROM articles WHERE fk_postCategory = 9 LIMIT 3")
 
-
-
-
-
       db.end();
+
+      let [latestArticlesData] = await sqlcalls.getLatestArticlesData();
+      let [mostPopularNewsData] = await sqlcalls.getMostPopularNewsData()
+      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
+      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
+      let [categoriesData] = await sqlcalls.getCategoriesData();
+      let [contactInfoData] = await sqlcalls.getContactInfoData();
 
       res.render('home', {
          categories: categoriesData,
@@ -74,21 +37,26 @@ module.exports = (app) => {
          breakingNewsHero: breakingNewsHeroData,
          internationalNewsHero: internationalNewsHeroData,
          featuredPosts: featuredPostsData,
+         contactInfo: contactInfoData[0],
       });
    });
    app.get('/about', async (req, res, next) => {
-      let db = await mysql.connect();
-      let [categoriesData] = await db.execute("SELECT * from postcategories")
-      let [breakingNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 6 ORDER BY postTime DESC LIMIT 3");
-      let [internationalNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 9 ORDER BY postTime DESC LIMIT 3");
-      let [teamMembersData] = await db.execute("SELECT name,img,position FROM authors")
 
+      let db = await mysql.connect();
+      let [teamMembersData] = await db.execute("SELECT name,img,position FROM authors")
       db.end();
+
+      let [categoriesData] = await sqlcalls.getCategoriesData();
+      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
+      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
+      let [contactInfoData] = await sqlcalls.getContactInfoData();
+
       res.render('about', {
          categories: categoriesData,
          teamMembers: teamMembersData,
          breakingNewsHero: breakingNewsHeroData,
          internationalNewsHero: internationalNewsHeroData,
+         contactInfo: contactInfoData[0],
       });
    });
 
@@ -103,20 +71,21 @@ module.exports = (app) => {
       let [categoryTest] = await db.execute("select id from postCategories where id = ?", [req.params.categoryid])
       if (categoryTest.length == 0) {
          res.redirect("/")
+         return;
       }
-
-      let [latestArticlesData] = await db.execute("SELECT postcategories.id as categoryid , postcategories.name as postCategory , articles.id , articles.title , articles.img , articles.postTime FROM postcategories LEFT OUTER JOIN articles ON fk_postCategory = postcategories.id WHERE articles.id = ( SELECT id FROM articles WHERE fk_postCategory = postcategories.id ORDER BY articles.postTime DESC LIMIT 1) ORDER BY postTime Desc");
-      let [latestCommentsData] = await db.execute("select comments.postTime, users.img,users.name, articles.title as commentedPost from comments INNER JOIN users on comments.fk_userId = users.id INNER JOIN articles on comments.fk_commentedPostId = articles.id ORDER BY postTime DESC limit 6");
-      let [mostPopularNewsData] = await db.execute("select * FROM articles ORDER BY likes DESC LIMIT 4");
-      let [breakingNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 6 ORDER BY postTime DESC LIMIT 3");
-      let [internationalNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 9 ORDER BY postTime DESC LIMIT 3");
-      let [categoriesData] = await getCategoriesData()
 
       let [articlesData] = await db.execute("SELECT articles.id as id, articles.summary as summary, articles.img as img, articles.likes as likes, articles.title as title, authors.name as authorname,postcategories.id as categoryid, postcategories.name as category,(SELECT COUNT(id) from comments where fk_commentedPostId = id) as commentCount From articles INNER JOIN authors on articles.fk_author = authors.id INNER JOIN postcategories on articles.fk_postCategory = postcategories.id WHERE fk_postCategory = ? ORDER BY postTime DESC", [req.params.categoryid]);
 
-
       db.end();
-      // res.send(req.params.categoryid)
+
+      let [latestArticlesData] = await sqlcalls.getLatestArticlesData();
+      let [latestCommentsData] = await sqlcalls.getLatestCommentsData();
+      let [mostPopularNewsData] = await sqlcalls.getMostPopularNewsData();
+      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
+      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
+      let [categoriesData] = await sqlcalls.getCategoriesData();
+      let [contactInfoData] = await sqlcalls.getContactInfoData();
+
       res.render('category', {
          categories: categoriesData,
          latestNews: latestArticlesData,
@@ -125,20 +94,22 @@ module.exports = (app) => {
          articles: articlesData,
          breakingNewsHero: breakingNewsHeroData,
          internationalNewsHero: internationalNewsHeroData,
+         contactInfo: contactInfoData[0],
       });
    });
 
    app.get('/contact', async (req, res, next) => {
-      let db = await mysql.connect();
-      let [categoriesData] = await getCategoriesData()
-      let [breakingNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 6 ORDER BY postTime DESC LIMIT 3")
-      let [internationalNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 9 ORDER BY postTime DESC LIMIT 3");
+      
+      let [categoriesData] = await sqlcalls.getCategoriesData();
+      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
+      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
+      let [contactInfoData] = await sqlcalls.getContactInfoData();
 
-      db.end();
       res.render('contact', {
          categories: categoriesData,
          breakingNewsHero: breakingNewsHeroData,
          internationalNewsHero: internationalNewsHeroData,
+         contactInfo: contactInfoData[0],
       });
    });
 
@@ -148,14 +119,9 @@ module.exports = (app) => {
          return;
       }
       let db = await mysql.connect();
-      let [latestArticlesData] = await db.execute("SELECT postcategories.id as categoryid , postcategories.name as postCategory , articles.id , articles.title , articles.img , articles.postTime FROM postcategories LEFT OUTER JOIN articles ON fk_postCategory = postcategories.id WHERE articles.id = ( SELECT id FROM articles WHERE fk_postCategory = postcategories.id ORDER BY articles.postTime DESC LIMIT 1) ORDER BY postTime Desc");
-      let [mostPopularNewsData] = await db.execute("select * FROM articles ORDER BY likes DESC LIMIT 4");
-      let [latestCommentsData] = await db.execute("select comments.postTime, users.img,users.name, articles.title as commentedPost from comments INNER JOIN users on comments.fk_userId = users.id INNER JOIN articles on comments.fk_commentedPostId = articles.id ORDER BY postTime DESC limit 6");
-      let [breakingNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 6 ORDER BY postTime DESC LIMIT 3")
-      let [internationalNewsHeroData] = await db.execute("select title,id FROM articles WHERE fk_postCategory = 9 ORDER BY postTime DESC LIMIT 3");
-      let [categoriesData] = await getCategoriesData()
 
       let [articledata] = await db.execute("select articles.id as id, articles.content as content, articles.title as title, articles.img as img, articles.likes as likes,authors.name as authorName, authors.about as authorAbout, authors.img as authorImg, postCategories.name as category,postCategories.id as categoryId,(SELECT COUNT(id) from comments where fk_commentedPostId = id) as commentCount FROM articles INNER JOIN authors on articles.fk_author = authors.id INNER JOIN postcategories on articles.fk_postCategory = postcategories.id where articles.id = ?", [req.params.articleid]);
+
       if (articledata.length == 0) {
          res.redirect("/")
       }
@@ -164,6 +130,15 @@ module.exports = (app) => {
 
       let [articleCommentsData] = await db.execute("SELECT comments.message as message, comments.postTime as postTime, users.img as img, users.name as name FROM comments INNER JOIN users on comments.fk_userId = users.id WHERE comments.fk_commentedPostId = ? ORDER BY comments.postTime DESC", [req.params.articleid])
       db.end();
+
+      let [latestArticlesData] = await sqlcalls.getLatestArticlesData();
+      let [latestCommentsData] = await sqlcalls.getLatestCommentsData();
+      let [mostPopularNewsData] = await sqlcalls.getMostPopularNewsData();
+      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
+      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
+      let [categoriesData] = await sqlcalls.getCategoriesData();
+      let [contactInfoData] = await sqlcalls.getContactInfoData();
+
       res.render('article', {
          article: articledata[0],
          relatedArticles: relatedArticlesData,
@@ -174,6 +149,7 @@ module.exports = (app) => {
          articleComments: articleCommentsData,
          breakingNewsHero: breakingNewsHeroData,
          internationalNewsHero: internationalNewsHeroData,
+         contactInfo: contactInfoData[0],
       });
    });
 

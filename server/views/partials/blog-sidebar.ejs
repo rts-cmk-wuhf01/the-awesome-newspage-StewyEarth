@@ -39,7 +39,7 @@
             <img src="/img/bg-img/<%= comment.img %>" alt="">
         </div>
         <div class="comments-text">
-            <a href="#"><%= comment.name %> <span>on</span> <%= comment.commentedPost %></a>
+            <a href="/article/<%= comment.articleId %>"><%= comment.name %> <span>on</span> <%= comment.commentedPost %></a>
             <p><%= dateAndTime.format(postTime, 'hh:mm A, MMMM DD, YYYY ') %></p>
         </div>
     </div>
