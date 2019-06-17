@@ -195,7 +195,8 @@ module.exports = (app) => {
          contactRender.messageStatusCode = "Success";
       }
 
-      contactRender.return_message = return_message.join(", "),
+      // contactRender.return_message = return_message.join(", ")
+      contactRender.return_messages = return_message;
       res.render('contact', contactRender);
 
    });
