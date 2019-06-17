@@ -1,7 +1,7 @@
 const mysql = require("../config/mysql")
 const sqlcalls = require('../sql-services/calls');
 
-function validateEmail(email){
+function validateEmail(email) {
    let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
    return regex.test(email)
@@ -120,79 +120,92 @@ module.exports = (app) => {
    //  tilføjes i routes.js filen f.eks. lige under app.get('/contact') endpoint
    app.post('/contact', async (req, res, next) => {
 
-   // indsamling af værdierne og oprettelse af de nødvendige variabler.
-   let name = req.body.name;
-   let email = req.body.email;
-   let subject = req.body.subject;
-   let message = req.body.message;
-   let contactDate = new Date();
+      // indsamling af værdierne og oprettelse af de nødvendige variabler.
+      let name = req.body.name;
+      let email = req.body.email;
+      let subject = req.body.subject;
+      let message = req.body.message;
+      let contactDate = new Date();
 
-   // håndter valideringen, alle fejl pushes til et array så de er samlet ET sted
-   let return_message = [];
-   if (name == undefined || name == '') {
-      return_message.push('Name is missing');
-   }else if(name.length < 2){
-      return_message.push("Enter a name thats more than 2 or more characters");
-   }
-   if (email == undefined || email == '') {
-      return_message.push('Email missing');
-   }else if (!validateEmail(email)){
-      return_message.push('Enter a valid email');
-   }
-   if (subject == undefined || subject == '') {
-      return_message.push('Subject is missing');
-   }else if(subject.length < 3){
-      return_message.push("Your subject must be 3 or more characters");
-   }
-   if (message == undefined || message == '') {
-      return_message.push('Message is missing');
-   }
 
-   // dette er et kort eksempel på strukturen, denne udvides selvfølgelig til noget mere brugbart
-   // hvis der er 1 eller flere elementer i `return_message`, så mangler der noget
-   if (return_message.length > 0) {
-   // der er mindst 1 information der mangler, returner beskeden som en string.
-   let categoriesData = await sqlcalls.getCategoriesData();
-   let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
-   let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
-   let contactInfoData = await sqlcalls.getContactInfoData();
+      //TODO. Lav validerings functioner
+      // håndter valideringen, alle fejl pushes til et array så de er samlet ET sted
+      let return_message = [];
 
-   res.render('contact', {
-      categories: categoriesData,
-      breakingNewsHero: breakingNewsHeroData,
-      internationalNewsHero: internationalNewsHeroData,
-      contactInfo: contactInfoData[0],
-      return_message: return_message.join(", "),
-      values: req.body, 
-   });
-   } else {
-      let db = await mysql.connect();
-      let result = await db.execute(`
+      if (typeof name != "undefined"){
+         name = name.trim()
+         if (name == '') {
+            return_message.push('Name is missing');
+         } else if (name.length < 2) {
+            return_message.push("Enter a name thats more than 2 or more characters");
+         }
+         console.log(`[${name}]`)
+      }
+
+
+
+
+      if (email == undefined || email == '') {
+         return_message.push('Email missing');
+      } else if (!validateEmail(email)) {
+         return_message.push('Enter a valid email');
+      }
+
+      if (subject == undefined || subject == '') {
+         return_message.push('Subject is missing');
+      } else if (subject.length < 3) {
+         return_message.push("Your subject must be 3 or more characters");
+      }
+
+      if (message == undefined || message == '') {
+         return_message.push('Message is missing');
+      }
+
+      // dette er et kort eksempel på strukturen, denne udvides selvfølgelig til noget mere brugbart
+      // hvis der er 1 eller flere elementer i `return_message`, så mangler der noget
+      if (return_message.length > 0) {
+         // der er mindst 1 information der mangler, returner beskeden som en string.
+         let categoriesData = await sqlcalls.getCategoriesData();
+         let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+         let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+         let contactInfoData = await sqlcalls.getContactInfoData();
+
+         res.render('contact', {
+            categories: categoriesData,
+            breakingNewsHero: breakingNewsHeroData,
+            internationalNewsHero: internationalNewsHeroData,
+            contactInfo: contactInfoData[0],
+            return_message: return_message.join(", "),
+            values: req.body,
+         });
+      } else {
+         let db = await mysql.connect();
+         let result = await db.execute(`
          INSERT INTO contactmessages 
          SET
             name = ?, email = ?, subject = ?, message = ?, postTime = ? `
             , [name, email, subject, message, contactDate]);
-      db.end();
+         db.end();
 
-      if (result[0].affectedRows > 0) {
-         return_message.push('Tak for din besked, vi vender tilbage hurtigst muligt');
-      } else {
-         return_message.push('Din besked blev ikke modtaget.... ');
+         if (result[0].affectedRows > 0) {
+            return_message.push('Tak for din besked, vi vender tilbage hurtigst muligt');
+         } else {
+            return_message.push('Din besked blev ikke modtaget.... ');
+         }
+         let categoriesData = await sqlcalls.getCategoriesData();
+         let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+         let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+         let contactInfoData = await sqlcalls.getContactInfoData();
+
+         res.render('contact', {
+            categories: categoriesData,
+            breakingNewsHero: breakingNewsHeroData,
+            internationalNewsHero: internationalNewsHeroData,
+            contactInfo: contactInfoData[0],
+            return_message: return_message.join(", "),
+            values: [],
+         });
       }
-      let categoriesData = await sqlcalls.getCategoriesData();
-      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
-      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
-      let contactInfoData = await sqlcalls.getContactInfoData();
-   
-      res.render('contact', {
-         categories: categoriesData,
-         breakingNewsHero: breakingNewsHeroData,
-         internationalNewsHero: internationalNewsHeroData,
-         contactInfo: contactInfoData[0],
-         return_message: return_message.join(", "),
-         values: [], 
-      });
-   }
 
    });
 
