@@ -44,6 +44,10 @@ app.locals.dateAndTime.setLocales('en', {
  * dette sker igennem en ny fil, for at splitte koden op i smartere blokke */
 require('./server/routes/routes.js')(app);
 
+require("./server/admin/routes/routes.js")(app);
+
+
+
 /* sæt serveren op så den kan servere html/css/javascript
  * og billeder direkte fra public mappen, efter alle routes er kørt */
 app.use(express.static('public'));
