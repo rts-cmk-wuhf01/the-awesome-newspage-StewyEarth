@@ -1,6 +1,12 @@
 const mysql = require("../config/mysql")
 const sqlcalls = require('../sql-services/calls');
 
+function validateEmail(email){
+   let regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+   return regex.test(email)
+}
+
 module.exports = (app) => {
 
    app.get('/', async (req, res, next) => {
@@ -10,7 +16,7 @@ module.exports = (app) => {
       let [editorsPicksData] = await db.execute("SELECT articles.img as img,articles.title as title, articles.id as articleId,articles.postTime as postTime FROM editorspicks INNER JOIN articles on articles.id = editorspicks.fk_pickedArticle LIMIT 6");
 
       let [popularNewsHomeData] = await db.execute("select articles.title as title, articles.id as id, articles.likes as likes, articles.img as img, postcategories.name as postCategory, postcategories.id as categoryid,(SELECT COUNT(id) from comments where fk_commentedPostId = id) as commentCount  FROM articles INNER JOIN postcategories on articles.fk_postCategory = postcategories.id ORDER BY likes DESC LIMIT 4");
-      
+
       let [featuredPostsData] = await db.execute("SELECT summary,likes,title,articles.img as img, articles.id as articleId, postcategories.name as category, postcategories.id as categoryId, authors.name as author,(SELECT COUNT(id) from comments where fk_commentedPostId = articleId) as commentCount FROM `articles` INNER JOIN postcategories on fk_postCategory = postcategories.id INNER JOIN authors on fk_author = authors.id WHERE IsFeatured = 1 ORDER BY `articles`.`postTime` DESC LIMIT 3")
 
       let [videosHomeData] = await db.execute("select * FROM videos");
@@ -19,12 +25,12 @@ module.exports = (app) => {
 
       db.end();
 
-      let [latestArticlesData] = await sqlcalls.getLatestArticlesData();
-      let [mostPopularNewsData] = await sqlcalls.getMostPopularNewsData()
-      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
-      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
-      let [categoriesData] = await sqlcalls.getCategoriesData();
-      let [contactInfoData] = await sqlcalls.getContactInfoData();
+      let latestArticlesData = await sqlcalls.getLatestArticlesData();
+      let mostPopularNewsData = await sqlcalls.getMostPopularNewsData()
+      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+      let categoriesData = await sqlcalls.getCategoriesData();
+      let contactInfoData = await sqlcalls.getContactInfoData();
 
       res.render('home', {
          categories: categoriesData,
@@ -46,10 +52,10 @@ module.exports = (app) => {
       let [teamMembersData] = await db.execute("SELECT name,img,position FROM authors")
       db.end();
 
-      let [categoriesData] = await sqlcalls.getCategoriesData();
-      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
-      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
-      let [contactInfoData] = await sqlcalls.getContactInfoData();
+      let categoriesData = await sqlcalls.getCategoriesData();
+      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+      let contactInfoData = await sqlcalls.getContactInfoData();
 
       res.render('about', {
          categories: categoriesData,
@@ -78,13 +84,13 @@ module.exports = (app) => {
 
       db.end();
 
-      let [latestArticlesData] = await sqlcalls.getLatestArticlesData();
-      let [latestCommentsData] = await sqlcalls.getLatestCommentsData();
-      let [mostPopularNewsData] = await sqlcalls.getMostPopularNewsData();
-      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
-      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
-      let [categoriesData] = await sqlcalls.getCategoriesData();
-      let [contactInfoData] = await sqlcalls.getContactInfoData();
+      let latestArticlesData = await sqlcalls.getLatestArticlesData();
+      let latestCommentsData = await sqlcalls.getLatestCommentsData();
+      let mostPopularNewsData = await sqlcalls.getMostPopularNewsData();
+      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+      let categoriesData = await sqlcalls.getCategoriesData();
+      let contactInfoData = await sqlcalls.getContactInfoData();
 
       res.render('category', {
          categories: categoriesData,
@@ -99,11 +105,10 @@ module.exports = (app) => {
    });
 
    app.get('/contact', async (req, res, next) => {
-      
-      let [categoriesData] = await sqlcalls.getCategoriesData();
-      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
-      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
-      let [contactInfoData] = await sqlcalls.getContactInfoData();
+      let categoriesData = await sqlcalls.getCategoriesData();
+      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+      let contactInfoData = await sqlcalls.getContactInfoData();
 
       res.render('contact', {
          categories: categoriesData,
@@ -111,6 +116,84 @@ module.exports = (app) => {
          internationalNewsHero: internationalNewsHeroData,
          contactInfo: contactInfoData[0],
       });
+   });
+   //  tilføjes i routes.js filen f.eks. lige under app.get('/contact') endpoint
+   app.post('/contact', async (req, res, next) => {
+
+   // indsamling af værdierne og oprettelse af de nødvendige variabler.
+   let name = req.body.name;
+   let email = req.body.email;
+   let subject = req.body.subject;
+   let message = req.body.message;
+   let contactDate = new Date();
+
+   // håndter valideringen, alle fejl pushes til et array så de er samlet ET sted
+   let return_message = [];
+   if (name == undefined || name == '') {
+      return_message.push('Name is missing');
+   }else if(name.length < 2){
+      return_message.push("Enter a name thats more than 2 or more characters");
+   }
+   if (email == undefined || email == '') {
+      return_message.push('Email missing');
+   }else if (!validateEmail(email)){
+      return_message.push('Enter a valid email');
+   }
+   if (subject == undefined || subject == '') {
+      return_message.push('Subject is missing');
+   }else if(subject.length < 3){
+      return_message.push("Your subject must be 3 or more characters");
+   }
+   if (message == undefined || message == '') {
+      return_message.push('Message is missing');
+   }
+
+   // dette er et kort eksempel på strukturen, denne udvides selvfølgelig til noget mere brugbart
+   // hvis der er 1 eller flere elementer i `return_message`, så mangler der noget
+   if (return_message.length > 0) {
+   // der er mindst 1 information der mangler, returner beskeden som en string.
+   let categoriesData = await sqlcalls.getCategoriesData();
+   let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+   let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+   let contactInfoData = await sqlcalls.getContactInfoData();
+
+   res.render('contact', {
+      categories: categoriesData,
+      breakingNewsHero: breakingNewsHeroData,
+      internationalNewsHero: internationalNewsHeroData,
+      contactInfo: contactInfoData[0],
+      return_message: return_message.join(", "),
+      values: req.body, 
+   });
+   } else {
+      let db = await mysql.connect();
+      let result = await db.execute(`
+         INSERT INTO contactmessages 
+         SET
+            name = ?, email = ?, subject = ?, message = ?, postTime = ? `
+            , [name, email, subject, message, contactDate]);
+      db.end();
+
+      if (result[0].affectedRows > 0) {
+         return_message.push('Tak for din besked, vi vender tilbage hurtigst muligt');
+      } else {
+         return_message.push('Din besked blev ikke modtaget.... ');
+      }
+      let categoriesData = await sqlcalls.getCategoriesData();
+      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+      let contactInfoData = await sqlcalls.getContactInfoData();
+   
+      res.render('contact', {
+         categories: categoriesData,
+         breakingNewsHero: breakingNewsHeroData,
+         internationalNewsHero: internationalNewsHeroData,
+         contactInfo: contactInfoData[0],
+         return_message: return_message.join(", "),
+         values: [], 
+      });
+   }
+
    });
 
    app.get('/article/:articleid', async (req, res, next) => {
@@ -131,13 +214,13 @@ module.exports = (app) => {
       let [articleCommentsData] = await db.execute("SELECT comments.message as message, comments.postTime as postTime, users.img as img, users.name as name FROM comments INNER JOIN users on comments.fk_userId = users.id WHERE comments.fk_commentedPostId = ? ORDER BY comments.postTime DESC", [req.params.articleid])
       db.end();
 
-      let [latestArticlesData] = await sqlcalls.getLatestArticlesData();
-      let [latestCommentsData] = await sqlcalls.getLatestCommentsData();
-      let [mostPopularNewsData] = await sqlcalls.getMostPopularNewsData();
-      let [breakingNewsHeroData] = await sqlcalls.getBreakingNewsHeroData();
-      let [internationalNewsHeroData] = await sqlcalls.getInternationalNewsHeroData();
-      let [categoriesData] = await sqlcalls.getCategoriesData();
-      let [contactInfoData] = await sqlcalls.getContactInfoData();
+      let latestArticlesData = await sqlcalls.getLatestArticlesData();
+      let latestCommentsData = await sqlcalls.getLatestCommentsData();
+      let mostPopularNewsData = await sqlcalls.getMostPopularNewsData();
+      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+      let categoriesData = await sqlcalls.getCategoriesData();
+      let contactInfoData = await sqlcalls.getContactInfoData();
 
       res.render('article', {
          article: articledata[0],

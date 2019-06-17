@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 13, 2019 at 02:04 PM
+-- Generation Time: Jun 17, 2019 at 10:13 AM
 -- Server version: 10.1.37-MariaDB
 -- PHP Version: 7.3.1
 
@@ -111,6 +111,29 @@ CREATE TABLE `comments` (
 INSERT INTO `comments` (`id`, `message`, `postTime`, `fk_userId`, `fk_commentedPostId`) VALUES
 (1, 'YO THAT\'S CRAZY, I\'m so happy I don\'t live there', '2019-06-09 00:00:00', 1, 26),
 (2, 'BROOOOOOOOOOO', '2019-06-09 13:00:00', 2, 26);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `contactmessages`
+--
+
+CREATE TABLE `contactmessages` (
+  `id` int(11) NOT NULL,
+  `name` varchar(64) NOT NULL,
+  `email` varchar(256) NOT NULL,
+  `subject` varchar(64) NOT NULL,
+  `message` varchar(2000) NOT NULL,
+  `postTime` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `contactmessages`
+--
+
+INSERT INTO `contactmessages` (`id`, `name`, `email`, `subject`, `message`, `postTime`) VALUES
+(1, 'Mikkel', 'mbk@gmail.com', 'Nicklas er dum', 'Nicklas er bare en stor spasser. Skal vi ikke skille os af med ham?', '2019-06-17 09:39:01'),
+(2, '0asdi', 'asd@osdj.ds', 'Yaas queen', 'asfdasdasd', '2019-06-17 10:10:36');
 
 -- --------------------------------------------------------
 
@@ -250,6 +273,12 @@ ALTER TABLE `comments`
   ADD KEY `fk_user` (`fk_userId`);
 
 --
+-- Indexes for table `contactmessages`
+--
+ALTER TABLE `contactmessages`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `editorspicks`
 --
 ALTER TABLE `editorspicks`
@@ -299,6 +328,12 @@ ALTER TABLE `authors`
 -- AUTO_INCREMENT for table `comments`
 --
 ALTER TABLE `comments`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- AUTO_INCREMENT for table `contactmessages`
+--
+ALTER TABLE `contactmessages`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
