@@ -173,6 +173,8 @@ module.exports = (app) => {
       if (return_message.length > 0) {
          // der er mindst 1 information der mangler, returner beskeden som en string.
          contactRender.values = req.body;
+         contactRender.messageStatusCode = "Error";
+         
 
       } else {
          let db = await mysql.connect();
@@ -190,6 +192,7 @@ module.exports = (app) => {
          }
 
          contactRender.values = [];
+         contactRender.messageStatusCode = "Success";
       }
 
       contactRender.return_message = return_message.join(", "),

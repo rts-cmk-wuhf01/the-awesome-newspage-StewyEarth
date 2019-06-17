@@ -44,7 +44,19 @@
                 <div class="col-12 col-lg-8">
                     <div class="contact-form-area">
                         <% if( typeof return_message != 'undefined'){ %>
-                        <h4><%= return_message %></h4>
+                            <% 
+                            /* let messageClass = ""
+                            if(messageStatusCode == "Error"){
+                                messageClass = "message--error"
+                            }else{
+                                messageClass = "message--success"
+                            } */
+
+                            let messageClass = messageStatusCode == "Error" ? "message--error" : "message--success";
+                            
+                            %>
+
+                            <h4 class="<%= messageClass %>"><%= return_message %></h4>
                         <% } %>
                         <form method="post">
                             <div class="row">
