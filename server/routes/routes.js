@@ -139,11 +139,7 @@ module.exports = (app) => {
          } else if (name.length < 2) {
             return_message.push("Enter a name thats more than 2 or more characters");
          }
-         console.log(`[${name}]`)
       }
-
-
-
 
       if (email == undefined || email == '') {
          return_message.push('Email missing');
@@ -163,21 +159,21 @@ module.exports = (app) => {
 
       // dette er et kort eksempel på strukturen, denne udvides selvfølgelig til noget mere brugbart
       // hvis der er 1 eller flere elementer i `return_message`, så mangler der noget
+      let categoriesData = await sqlcalls.getCategoriesData();
+      let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
+      let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
+      let contactInfoData = await sqlcalls.getContactInfoData();
+      let contactRender = {
+         categories: categoriesData,
+         breakingNewsHero: breakingNewsHeroData,
+         internationalNewsHero: internationalNewsHeroData,
+         contactInfo: contactInfoData[0],
+      }
+
       if (return_message.length > 0) {
          // der er mindst 1 information der mangler, returner beskeden som en string.
-         let categoriesData = await sqlcalls.getCategoriesData();
-         let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
-         let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
-         let contactInfoData = await sqlcalls.getContactInfoData();
+         contactRender.values = req.body;
 
-         res.render('contact', {
-            categories: categoriesData,
-            breakingNewsHero: breakingNewsHeroData,
-            internationalNewsHero: internationalNewsHeroData,
-            contactInfo: contactInfoData[0],
-            return_message: return_message.join(", "),
-            values: req.body,
-         });
       } else {
          let db = await mysql.connect();
          let result = await db.execute(`
@@ -192,20 +188,12 @@ module.exports = (app) => {
          } else {
             return_message.push('Din besked blev ikke modtaget.... ');
          }
-         let categoriesData = await sqlcalls.getCategoriesData();
-         let breakingNewsHeroData = await sqlcalls.getBreakingNewsHeroData();
-         let internationalNewsHeroData = await sqlcalls.getInternationalNewsHeroData();
-         let contactInfoData = await sqlcalls.getContactInfoData();
 
-         res.render('contact', {
-            categories: categoriesData,
-            breakingNewsHero: breakingNewsHeroData,
-            internationalNewsHero: internationalNewsHeroData,
-            contactInfo: contactInfoData[0],
-            return_message: return_message.join(", "),
-            values: [],
-         });
+         contactRender.values = [];
       }
+
+      contactRender.return_message = return_message.join(", "),
+      res.render('contact', contactRender);
 
    });
 
