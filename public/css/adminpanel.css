@@ -1,0 +1,27 @@
+.adminpanel {
+    display: grid;
+    grid-template-columns: 1fr 5fr;
+}
+
+.adminpanel__nav {
+    background-color: #222d32;
+    height: 100vh;
+    color: #b8c7ce;
+}
+
+.adminpanel__nav-top {
+    background-color: #1a2226;
+}
+.adminpanel__nav-top-title{
+    color: #b8c7ce;
+    font-size: 1.7rem;
+    padding: .5em;
+}
+.adminpanel__nav-linklist {
+    padding: 0;
+    margin: 0;
+}
+
+.adminpanel__nav-linkitem {
+    padding: .7rem;
+}

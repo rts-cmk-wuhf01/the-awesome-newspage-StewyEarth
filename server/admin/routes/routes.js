@@ -7,6 +7,6 @@ module.exports = (app) => {
     app.get('/admin', async (req, res, next) => {
         let db = await mysql.connect();
         db.end();
-        res.send("Admin Panel goes here");
+        res.render("panel")
     });
 }
