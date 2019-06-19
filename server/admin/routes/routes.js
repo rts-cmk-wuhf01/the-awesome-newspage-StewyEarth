@@ -7,6 +7,6 @@ module.exports = (app) => {
     app.get('/admin', async (req, res, next) => {
         let db = await mysql.connect();
         db.end();
-        res.render("panel")
+        res.render("adminpanel")  //Loader HTML og muligvis sender noget data med som 2. parameter
     });
 }

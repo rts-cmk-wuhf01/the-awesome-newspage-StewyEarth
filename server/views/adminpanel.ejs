@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <%- include("partials/styles.ejs")%>
+    <link rel="stylesheet" href="/css/adminpanel.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css"
+        integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <title>Admin panel V 1.0</title>
+</head>
+
+<body>
+    <div class="adminpanel">
+        <div class="adminpanel__nav">
+            <div class="adminpanel__nav-top">
+                <h1 class="adminpanel__nav-top-title">Admin Panel</h1>
+            </div>
+            <div class="adminpanel__userinfo">
+                <a href="/admin" class="adminpanel__userlink">
+                    <img src="/img/bg-img/u1.jpg" alt="userimg" class="adminpanel__userinfo-img">
+                    <p class="adminpanel__user-username adminpanel__nav-link">Marcus</p>
+                </a>
+                <label for="adminpanel__usersettingscheckbox" class="adminpanel__userinfo-label fas fa-angle-down"></label>
+                <input type="checkbox" id="adminpanel__usersettingscheckbox" class="hidden">
+                <nav class="adminpanel__usernav">
+                    <ul>
+                        <li><a href="" class="adminpanel__nav-link">Hi</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <nav>
+                <ul class="adminpanel__nav-linklist">
+                    <li class="adminpanel__nav-linkitem">
+                        <a href="/admin" class="adminpanel__nav-link"><i
+                                class="fas fa-tachometer-alt fa-icon"></i>Dashboard</a>
+                    </li>
+                    <li class="adminpanel__nav-linkitem">
+                        <a href="/admin" class="adminpanel__nav-link"><i
+                                class="fas fa-laptop fa-icon"></i>Components</a>
+                    </li>
+                    <li class="adminpanel__nav-linkitem">
+                        <a href="/admin" class="adminpanel__nav-link"><i
+                                class="fas fa-clipboard fa-icon"></i>Articles</a>
+                    </li>
+                    <li class="adminpanel__nav-linkitem">
+                        <a href="/admin" class="adminpanel__nav-link"><i class="fas fa-cog fa-icon"></i>Settings</a>
+                    </li>
+                </ul>
+            </nav>
+
+        </div>
+        <main class="adminpanel__main">
+            <div class="adminpanel_infocontainer">
+                <div class="adminpanel_infopanel">
+                    <div class="adminpanel_infopanelinfo">
+                        <h3>Users</h3>
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 class="adminpanel_infopanel-count">200</h4>
+                </div>
+                <div class="adminpanel_infopanel">
+                    <div class="adminpanel_infopanelinfo">
+                        <h3>Expences</h3>
+                        <i class="fas fa-dollar-sign"></i>
+                    </div>
+                    <h4 class="adminpanel_infopanel-count">$828</h4>
+                </div>
+                <div class="adminpanel_infopanel">
+                    <div class="adminpanel_infopanelinfo">
+                        <h3>Revenue</h3>
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h4 class="adminpanel_infopanel-count">$5285</h4>
+                </div>
+                <div class="adminpanel_infopanel">
+                    <div class="adminpanel_infopanelinfo">
+                        <h3>Visitors</h3>
+                        <i class="fas fa-eye"></i>
+                    </div>
+                    <h4 class="adminpanel_infopanel-count">81352</h4>
+                </div>
+                <div class="adminpanel_infopanel">
+                    <div class="adminpanel_infopanelinfo">
+                        <h3>Revenue</h3>
+                        <i class="fas fa-piggy-bank"></i>
+                    </div>
+                    <h4 class="adminpanel_infopanel-count">$5285</h4>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>
