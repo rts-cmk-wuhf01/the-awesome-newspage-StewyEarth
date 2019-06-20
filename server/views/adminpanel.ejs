@@ -14,44 +14,7 @@
 
 <body>
     <div class="adminpanel">
-        <div class="adminpanel__nav">
-            <div class="adminpanel__nav-top">
-                <h1 class="adminpanel__nav-top-title">Admin Panel</h1>
-            </div>
-            <div class="adminpanel__userinfo">
-                <a href="/admin" class="adminpanel__userlink">
-                    <img src="/img/bg-img/u1.jpg" alt="userimg" class="adminpanel__userinfo-img">
-                    <p class="adminpanel__user-username adminpanel__nav-link">Marcus</p>
-                </a>
-                <label for="adminpanel__usersettingscheckbox" class="adminpanel__userinfo-label fas fa-angle-down"></label>
-                <input type="checkbox" id="adminpanel__usersettingscheckbox" class="hidden">
-                <nav class="adminpanel__usernav">
-                    <ul>
-                        <li><a href="" class="adminpanel__nav-link">Hi</a></li>
-                    </ul>
-                </nav>
-            </div>
-            <nav>
-                <ul class="adminpanel__nav-linklist">
-                    <li class="adminpanel__nav-linkitem">
-                        <a href="/admin" class="adminpanel__nav-link"><i
-                                class="fas fa-tachometer-alt fa-icon"></i>Dashboard</a>
-                    </li>
-                    <li class="adminpanel__nav-linkitem">
-                        <a href="/admin" class="adminpanel__nav-link"><i
-                                class="fas fa-laptop fa-icon"></i>Components</a>
-                    </li>
-                    <li class="adminpanel__nav-linkitem">
-                        <a href="/admin" class="adminpanel__nav-link"><i
-                                class="fas fa-clipboard fa-icon"></i>Articles</a>
-                    </li>
-                    <li class="adminpanel__nav-linkitem">
-                        <a href="/admin" class="adminpanel__nav-link"><i class="fas fa-cog fa-icon"></i>Settings</a>
-                    </li>
-                </ul>
-            </nav>
-
-        </div>
+        <%- include("partials/adminpanel-nav.ejs")%>
         <main class="adminpanel__main">
             <div class="adminpanel_infocontainer">
                 <div class="adminpanel_infopanel">
@@ -59,7 +22,7 @@
                         <h3>Users</h3>
                         <i class="fas fa-user"></i>
                     </div>
-                    <h4 class="adminpanel_infopanel-count">200</h4>
+                    <h4 class="adminpanel_infopanel-count"><%= userCount.count %></h4>
                 </div>
                 <div class="adminpanel_infopanel">
                     <div class="adminpanel_infopanelinfo">
