@@ -1,6 +1,35 @@
 .hidden {
     display: none;
 }
+.link--action{
+    color: green;
+    transition: 200ms all;
+}
+.link--action:hover{
+    color: goldenrod;
+}
+.link--warning{
+    color: red;
+}
+.link--warning:hover{
+    color: tomato;
+}
+table, th, td {
+    border: 1px solid black;
+}
+
+td,th{
+    padding: 1em;
+}
+th{
+    text-align: center;
+}
+.tablelink{
+    margin-right: .5em;
+}
+.tablelink:last-of-type{
+    margin-right: 0;
+}
 
 .adminpanel {
     display: grid;
@@ -91,11 +120,12 @@
     margin-top: 1em;
     width: 100%;
     padding-left: 1em;
-    max-height: 300px
-}
-#adminpanel__usersettingscheckbox:checked ~ .adminpanel__usernav{
     max-height: 0;
     overflow: hidden;
+}
+#adminpanel__usersettingscheckbox:checked ~ .adminpanel__usernav{
+    max-height: 300px;
+    overflow: auto;
 }
 
 .adminpanel__main {
