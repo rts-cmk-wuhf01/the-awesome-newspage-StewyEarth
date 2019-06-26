@@ -54,20 +54,54 @@ module.exports = (app) => {
         })
     });
 
-    app.get('/admin/categories/delete/:category_id', async (req, res, next) => {
-            let return_message = ""
+    app.get('/admin/categories/edit/:category_id', async (req, res, next) => {
+        let db = await mysql.connect();
+        let [categoryData] = await db.execute("SELECT * FROM postcategories WHERE id = ?",[req.params.category_id]);
+        let categoriesData = await sqlcalls.getCategoriesData();
+        db.end();
+        res.render("adminpanel-categories", {
+            category: categoryData[0],
+            categories: categoriesData
+        })
+    });
+    app.post('/admin/categories/edit/:category_id', async (req, res, next) => {
+        let name = req.body.name;
+        let return_message = ""
+
+        if (typeof name == "undefined" || name == '') {
+            return_message = 'Enter a name';
+        } else if (name.length < 2) {
+            return_message = "Enter a name thats more than 2 or more characters";
+        }
+
+        if (return_message.length == 0) {
             let db = await mysql.connect();
-            let result = await db.execute(`DELETE FROM postcategories WHERE postcategories.id = ?`
-                , [req.params.category_id]);
+            let [result] = await db.execute(
+                `UPDATE postCategories 
+                        SET name = ?
+                        WHERE id = ?`,
+                [name, req.params.category_id]
+            );
             db.end();
+        }
 
-            if (result[0].affectedRows > 0) {
-                return_message = 'Category removed';
-            } else {
-                return_message = 'Category could not be removed';
-            }
+        res.redirect("/admin/categories");
+    });
 
-            res.redirect("/admin/categories");
+    app.get('/admin/categories/delete/:category_id', async (req, res, next) => {
+        let return_message = ""
+        let db = await mysql.connect();
+        let result = await db.execute(`DELETE FROM postcategories WHERE postcategories.id = ?`
+            , [req.params.category_id]);
+        db.end();
+
+        if (result[0].affectedRows > 0) {
+            return_message = 'Category removed';
+        } else {
+            return_message = 'Category could not be removed';
+        }
+
+        res.redirect("/admin/categories");
     });
 
 
