@@ -89,17 +89,11 @@ module.exports = (app) => {
     });
 
     app.get('/admin/categories/delete/:category_id', async (req, res, next) => {
-        let return_message = ""
+
         let db = await mysql.connect();
-        let result = await db.execute(`DELETE FROM postcategories WHERE postcategories.id = ?`
+            await db.execute(`DELETE FROM postcategories WHERE postcategories.id = ?`
             , [req.params.category_id]);
         db.end();
-
-        if (result[0].affectedRows > 0) {
-            return_message = 'Category removed';
-        } else {
-            return_message = 'Category could not be removed';
-        }
 
         res.redirect("/admin/categories");
     });
